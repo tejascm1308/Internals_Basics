@@ -1,0 +1,18 @@
+{
+  "experiment_name": "copilotbench-suggestion-accept-rate",
+  "models": [
+    {
+      "name": "RandomForest",
+      "mae": 0.06312,
+      "rmse": 0.088
+    },
+    {
+      "name": "GradientBoosting",
+      "mae": 0.045616,
+      "rmse": 0.068084
+    }
+  ],
+  "best_model": "GradientBoosting",
+  "best_metric_name": "rmse",
+  "best_metric_value": 0.068084
+}
