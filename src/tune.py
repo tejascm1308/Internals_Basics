@@ -14,7 +14,7 @@ DATA_PATH = os.path.join(BASE_DIR, "data", "training_data.csv")
 RESULTS_DIR = os.path.join(BASE_DIR, "results")
 MODELS_DIR = os.path.join(BASE_DIR, "models")
 
-mlflow.set_tracking_uri(f"file://{BASE_DIR}/mlruns")
+mlflow.set_tracking_uri("file:///" + os.path.join(BASE_DIR, "mlruns").replace("\\", "/"))
 mlflow.set_experiment("copilotbench-suggestion-accept-rate")
 
 df = pd.read_csv(DATA_PATH)

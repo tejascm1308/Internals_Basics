@@ -17,7 +17,7 @@ os.makedirs(RESULTS_DIR, exist_ok=True)
 os.makedirs(MODELS_DIR, exist_ok=True)
 
 # Set MLflow tracking URI
-mlflow.set_tracking_uri(f"file://{BASE_DIR}/mlruns")
+mlflow.set_tracking_uri("file:///" + os.path.join(BASE_DIR, "mlruns").replace("\\", "/"))
 EXPERIMENT_NAME = "copilotbench-suggestion-accept-rate"
 mlflow.set_experiment(EXPERIMENT_NAME)
 

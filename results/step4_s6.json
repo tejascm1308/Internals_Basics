@@ -1,7 +1,7 @@
 {
   "registered_model_name": "copilotbench-suggestion-accept-rate-predictor",
   "version": 1,
-  "run_id": "ec461fd986f04fb99d37fcda0fb87d5f",
+  "run_id": "a132d5055fee42679bfe046c2a3b2ef9",
   "source_metric": "rmse",
   "source_metric_value": 0.068481
 }

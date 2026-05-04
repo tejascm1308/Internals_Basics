@@ -9,7 +9,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODELS_DIR = os.path.join(BASE_DIR, "models")
 RESULTS_DIR = os.path.join(BASE_DIR, "results")
 
-mlflow.set_tracking_uri(f"file://{BASE_DIR}/mlruns")
+mlflow.set_tracking_uri("file:///" + os.path.join(BASE_DIR, "mlruns").replace("\\", "/"))
 
 REGISTERED_MODEL_NAME = "copilotbench-suggestion-accept-rate-predictor"
 
@@ -17,22 +17,28 @@ REGISTERED_MODEL_NAME = "copilotbench-suggestion-accept-rate-predictor"
 with open(os.path.join(MODELS_DIR, "best_model_tuned.pkl"), "rb") as f:
     model_data = pickle.load(f)
 
-run_id = model_data["run_id"]
 rmse = model_data["rmse"]
 
+# Find the tuning-copilotbench run from YOUR local mlruns
 client = MlflowClient()
+experiment = client.get_experiment_by_name("copilotbench-suggestion-accept-rate")
+runs = client.search_runs(
+    experiment_ids=[experiment.experiment_id],
+    filter_string="tags.mlflow.runName = 'tuning-copilotbench'",
+    order_by=["start_time DESC"],
+    max_results=1
+)
 
-# Get the model URI from the run
-run = client.get_run(run_id)
+run = runs[0]
+run_id = run.info.run_id
 artifact_uri = run.info.artifact_uri
 model_uri = f"{artifact_uri}/tuned_model"
 
-# Register the model
-print(f"Registering model from run: {run_id}")
-mv = mlflow.register_model(model_uri=model_uri, name=REGISTERED_MODEL_NAME)
+print(f"Found run_id: {run_id}")
+print(f"Registering model from: {model_uri}")
 
+mv = mlflow.register_model(model_uri=model_uri, name=REGISTERED_MODEL_NAME)
 version = mv.version
-print(f"Registered version: {version}")
 
 step4 = {
     "registered_model_name": REGISTERED_MODEL_NAME,
